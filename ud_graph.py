@@ -70,13 +70,9 @@ class UndirectedGraph:
             return
         if v not in self.adj_list:
             return
-        # del self.adj_list[v][u]
-        # del self.adj_list[u][v]
+
         self.adj_list[v].remove(u)
         self.adj_list[u].remove(v)
-        # self.adj_list[u].pop(v)
-        # self.adj_list[v].pop(u)
-
 
     def remove_vertex(self, v: str) -> None:
         """
@@ -86,22 +82,63 @@ class UndirectedGraph:
             return
         del self.adj_list[v]
 
+        for i in self.adj_list:
+            if v in self.adj_list[i]:
+                self.adj_list[i].remove(v)
+
     def get_vertices(self) -> []:
         """
         TODO: Write this implementation
         """
-       
+        # vertices = list(self.adj_list.keys())
+        # for key in self.adj_list.keys():
+        #    vertices.append(key)
+        return list(self.adj_list.keys())
+
+    def remove_duplicates(self, list):
+
+        output, seen = [], set()
+        for item in list:
+            t1 = tuple(item)
+            if t1 not in seen and tuple(reversed(item)) not in seen:
+                seen.add(t1)
+                output.append(item)
+
+        return output
 
     def get_edges(self) -> []:
         """
         TODO: Write this implementation
         """
-        
+        edges = []
+        for k, v in self.adj_list.items():
+            for i in v:
+                edges.append((k, i))
+
+        output = self.remove_duplicates(edges)
+
+        return output
+
+        # return edges
+
+    def convert_string(self, string):
+        list = []
+        list[:0] = string
+        return list
 
     def is_valid_path(self, path: []) -> bool:
         """
         TODO: Write this implementation
         """
+
+        # path = self.convert_string(path)
+
+        # for i in range(len(path) - 1):
+        #     if (self.adj_list[path[i]][path[i + 1]]) not in self.adj_list:
+        #         return False
+
+
+        # return True
        
 
     def dfs(self, v_start, v_end=None) -> []:
@@ -126,7 +163,7 @@ class UndirectedGraph:
         """
         TODO: Write this implementation
         """
-       
+
 
    
 
@@ -160,6 +197,7 @@ if __name__ == '__main__':
     print(g)
     g.remove_vertex('D')
     print(g)
+    print(g)
 
 
     print("\nPDF - method get_vertices() / get_edges() example 1")
@@ -167,6 +205,7 @@ if __name__ == '__main__':
     g = UndirectedGraph()
     print(g.get_edges(), g.get_vertices(), sep='\n')
     g = UndirectedGraph(['AB', 'AC', 'BC', 'BD', 'CD', 'CE'])
+    print(g)
     print(g.get_edges(), g.get_vertices(), sep='\n')
 
 

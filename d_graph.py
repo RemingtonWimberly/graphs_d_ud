@@ -55,23 +55,35 @@ class DirectedGraph:
         """
         TODO: Write this implementation
         """
+        self.v_count += 1
+        self.adj_matrix.append([0] * self.v_count)
+
+        for i in range(self.v_count - 1):
+            self.adj_matrix[i].append(0)
+
+        return self.v_count
 
     def add_edge(self, src: int, dst: int, weight=1) -> None:
         """
         TODO: Write this implementation
         """
+        if src >= self.v_count or dst >= self.v_count or weight <= 0 or src == dst:
+            return
+        self.adj_matrix[src][dst] = weight
         
     def remove_edge(self, src: int, dst: int) -> None:
         """
         TODO: Write this implementation
         """
-        
+        if dst >= self.v_count or src >= self.v_count:
+            return
+        self.adj_matrix[src][dst] = 0
 
     def get_vertices(self) -> []:
         """
         TODO: Write this implementation
         """
-        
+
 
     def get_edges(self) -> []:
         """
@@ -83,7 +95,11 @@ class DirectedGraph:
         """
         TODO: Write this implementation
         """
-        
+        for i in range(len(path) - 1):
+            if self.adj_matrix[path[i]][path[i + 1]] == 0:
+                return False
+
+        return True
 
 
     def dfs(self, v_start, v_end=None) -> []:
