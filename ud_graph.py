@@ -130,41 +130,72 @@ class UndirectedGraph:
         """
         TODO: Write this implementation
         """
+        edges = []
+        for k, v in self.adj_list.items():
+            for i in v:
+                edges.append((k, i))
 
-        # path = self.convert_string(path)
+        output = self.remove_duplicates(edges)
 
-        # for i in range(len(path) - 1):
-        #     if (self.adj_list[path[i]][path[i + 1]]) not in self.adj_list:
-        #         return False
+        vert = self.get_vertices()
 
+        for i in range(len(path) - 1):
+            adjacent_route = tuple(sorted(path[i] + path[i + 1]))
+            if adjacent_route not in output and adjacent_route not in vert:
+                return False
 
-        # return True
-       
+        if len(path) == 1:
+            if path[0] not in vert:
+                return False
+
+        return True
+
 
     def dfs(self, v_start, v_end=None) -> []:
         """
         TODO: Write this implementation
         """
-       
+        return self.DFS(v_start)
 
     def bfs(self, v_start, v_end=None) -> []:
         """
         TODO: Write this implementation
         """
-        
+
 
     def count_connected_components(self):
         """
         TODO: Write this implementation
         """
-      
 
     def has_cycle(self):
         """
         TODO: Write this implementation
         """
 
+    def DFSUtil(self, v, visited):
 
+        # Mark the current node as visited
+        # and print it
+        visited.add(v)
+        print(v, end=' ')
+
+        # Recur for all the vertices
+        # adjacent to this vertex
+        for neighbour in self.adj_list[v]:
+            if neighbour not in visited:
+                self.DFSUtil(neighbour, visited)
+
+    # The function to do DFS traversal. It uses
+    # recursive DFSUtil()
+    def DFS(self, v):
+
+        # Create a set to store visited vertices
+        visited = set()
+
+        # Call the recursive helper function
+        # to print DFS traversal
+        self.DFSUtil(v, visited)
    
 
 
