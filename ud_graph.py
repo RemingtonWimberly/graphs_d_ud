@@ -44,8 +44,11 @@ class UndirectedGraph:
         """
         TODO: Write this implementation
         """
-        SENTINEL = []
-        self.adj_list[v] = SENTINEL
+        # SENTINEL = []
+        # self.adj_list[v] = SENTINEL
+
+        if v not in self.adj_list:
+            self.adj_list[v] = []
 
 
         
@@ -60,6 +63,14 @@ class UndirectedGraph:
         self.adj_list[u].append(v)
         self.adj_list[v].append(u)
 
+        # if u not in self.adj_list:
+        #     self.adj_list[u] = v
+        # if v not in self.adj_list:
+        #     self.adj_list[v] = u
+        # if v not in self.adj_list[u]:
+        #     self.adj_list[u].append(v)
+        # if u not in self.adj_list[v]:
+        #     self.adj_list[v].append(u)
         
 
     def remove_edge(self, v: str, u: str) -> None:
