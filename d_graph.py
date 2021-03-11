@@ -6,6 +6,7 @@
 from collections import defaultdict
 from pprint import pprint
 
+
 class DirectedGraph:
     """
     Class to implement directed weighted graph
@@ -22,7 +23,6 @@ class DirectedGraph:
         """
         self.v_count = 0
         self.adj_matrix = []
-        self.adj_list = self.convert_matrix_to_Adj_list(self.adj_matrix)
 
         # populate graph with initial vertices and edges (if provided)
         # before using, implement add_vertex() and add_edge() methods
@@ -71,10 +71,10 @@ class DirectedGraph:
         TODO: Write this implementation
         """
         if src >= self.v_count or dst >= self.v_count or weight <= 0:
-        # if src >= self.v_count or dst >= self.v_count or weight <= 0 or src == dst:
+            # if src >= self.v_count or dst >= self.v_count or weight <= 0 or src == dst:
             return
         self.adj_matrix[src][dst] = weight
-        
+
     def remove_edge(self, src: int, dst: int) -> None:
         """
         TODO: Write this implementation
@@ -126,7 +126,6 @@ class DirectedGraph:
                 if value:
                     yield row, column, value
 
-
     def is_valid_path(self, path: []) -> bool:
         """
         TODO: Write this implementation
@@ -151,8 +150,7 @@ class DirectedGraph:
                     # graph[i].append({j: u})
                     graph[i].append(j)
                     # graph[i].append(u)
-        return dict(graph)
-
+        return graph
 
     def dfs(self, v_start, v_end=None) -> []:
         """
@@ -168,7 +166,7 @@ class DirectedGraph:
 
     def _dfs(self, v_start, v_end=None, visited=[], ret=[]):
 
-        adj_list = self.convert_matrix_to_Adj_list(self.adj_matrix)
+        adj_list = dict(self.convert_matrix_to_Adj_list(self.adj_matrix))
 
         visited.append(v_start)
         ret.append(v_start)
@@ -184,7 +182,7 @@ class DirectedGraph:
         """
         TODO: Write this implementation
         """
-        adj_list = self.convert_matrix_to_Adj_list(self.adj_matrix)
+        adj_list = dict(self.convert_matrix_to_Adj_list(self.adj_matrix))
         visited = []
         keys = []
         for itm in self.get_vertices():
@@ -217,20 +215,72 @@ class DirectedGraph:
         for i in ret2:
             ret3.append(int(i))
         return ret3
-        
+
+    def _has_cycle(self, v, visited, recStack):
+        adj_list = self.convert_matrix_to_Adj_list(self.adj_matrix)
+        visited[v] = True
+        recStack[v] = True
+
+        for neighbour in adj_list[v]:
+            if not visited[neighbour]:
+                if self._has_cycle(neighbour, visited, recStack):
+                    return True
+            elif recStack[neighbour]:
+                return True
+        recStack[v] = False
+        return False
 
     def has_cycle(self):
         """
         TODO: Write this implementation
         """
-        
+        visited = [False] * len(self.get_vertices())
+        recStack = [False] * len(self.get_vertices())
+        for node in range(len(self.get_vertices())):
+            if not visited[node]:
+                if self._has_cycle(node, visited, recStack):
+                    return True
+        return False
 
     def dijkstra(self, src: int) -> []:
         """
         TODO: Write this implementation
         """
-       
 
+    # def dijsktra(self, initial):
+    #     nodes = set()
+    #
+    #     adj_list = self.convert_matrix_to_Adj_list(self.adj_matrix)
+    #     for node in adj_list:
+    #         nodes.add(node)
+    #
+    #     visited = {initial: 0}
+    #     path = {}
+    #
+    #     nodes = set(nodes)
+    #
+    #     while nodes:
+    #         min_node = None
+    #         for node in nodes:
+    #             if node in visited:
+    #                 if min_node is None:
+    #                     min_node = node
+    #                 elif visited[node] < visited[min_node]:
+    #                     min_node = node
+    #
+    #         if min_node is None:
+    #             break
+    #
+    #         nodes.remove(min_node)
+    #         current_weight = visited[min_node]
+    #
+    #         for edge in self.get_edges()[min_node]:
+    #             weight = current_weight + graph.distance[(min_node, edge)]
+    #             if edge not in visited or weight < visited[edge]:
+    #                 visited[edge] = weight
+    #                 path[edge] = min_node
+    #
+    #     return visited, path
 
 
 if __name__ == '__main__':
@@ -248,7 +298,6 @@ if __name__ == '__main__':
         g.add_edge(src, dst, weight)
     print(g)
 
-
     print("\nPDF - method get_edges() example 1")
     print("----------------------------------")
     g = DirectedGraph()
@@ -257,7 +306,6 @@ if __name__ == '__main__':
              (3, 1, 5), (2, 1, 23), (3, 2, 7)]
     g = DirectedGraph(edges)
     print(g.get_edges(), g.get_vertices(), sep='\n')
-
 
     print("\nPDF - method is_valid_path() example 1")
     print("--------------------------------------")
@@ -268,7 +316,6 @@ if __name__ == '__main__':
     for path in test_cases:
         print(path, g.is_valid_path(path))
 
-
     print("\nPDF - method dfs() and bfs() example 1")
     print("--------------------------------------")
     edges = [(0, 1, 10), (4, 0, 12), (1, 4, 15), (4, 3, 3),
@@ -276,7 +323,6 @@ if __name__ == '__main__':
     g = DirectedGraph(edges)
     for start in range(5):
         print(f'{start} DFS:{g.dfs(start)} BFS:{g.bfs(start)}')
-
 
     print("\nPDF - method has_cycle() example 1")
     print("----------------------------------")
@@ -294,7 +340,6 @@ if __name__ == '__main__':
         g.add_edge(src, dst)
         print(g.get_edges(), g.has_cycle(), sep='\n')
     print('\n', g)
-
 
     print("\nPDF - dijkstra() example 1")
     print("--------------------------")
