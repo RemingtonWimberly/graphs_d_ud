@@ -3,6 +3,8 @@
 # Assignment: 
 # Description: 
 
+from collections import defaultdict
+from pprint import pprint
 
 class DirectedGraph:
     """
@@ -20,6 +22,7 @@ class DirectedGraph:
         """
         self.v_count = 0
         self.adj_matrix = []
+        self.adj_list = self.convert_matrix_to_Adj_list(self.adj_matrix)
 
         # populate graph with initial vertices and edges (if provided)
         # before using, implement add_vertex() and add_edge() methods
@@ -67,7 +70,8 @@ class DirectedGraph:
         """
         TODO: Write this implementation
         """
-        if src >= self.v_count or dst >= self.v_count or weight <= 0 or src == dst:
+        if src >= self.v_count or dst >= self.v_count or weight <= 0:
+        # if src >= self.v_count or dst >= self.v_count or weight <= 0 or src == dst:
             return
         self.adj_matrix[src][dst] = weight
         
@@ -83,13 +87,45 @@ class DirectedGraph:
         """
         TODO: Write this implementation
         """
+        # return list(range(len(self.adj_matrix)))
 
+        meow = list(range(len(self.adj_matrix)))
+        meow2 = []
+        for i in meow:
+            meow2.append(str(i))
+
+        return meow2
+
+    def get_v_string(self):
+        meow = list(range(len(self.adj_matrix)))
+        meow2 = []
+        for i in meow:
+            meow2.append('{}'.format(i))
 
     def get_edges(self) -> []:
         """
         TODO: Write this implementation
         """
-        
+        edge_list = []
+        edges = self._get_edges(self.adj_matrix)
+        for i in edges:
+            edge_list.append(i)
+
+        return edge_list
+
+    def _get_edges(self, adj):
+
+        """
+        helper function for get_edges
+        :param adj: adjacency matrix
+        :return: generator object
+        """
+
+        for row, neighbors in enumerate(adj):
+            for column, value in enumerate(neighbors):
+                if value:
+                    yield row, column, value
+
 
     def is_valid_path(self, path: []) -> bool:
         """
@@ -101,17 +137,86 @@ class DirectedGraph:
 
         return True
 
+    def convert_matrix_to_Adj_list(self, matrix):
+
+        l = matrix
+
+        graph = defaultdict(list)
+        edges = set()
+
+        for i, v in enumerate(l, 0):
+            for j, u in enumerate(v, 0):
+                if u != 0 and frozenset([i, j]) not in edges:
+                    edges.add(frozenset([i, j]))
+                    # graph[i].append({j: u})
+                    graph[i].append(j)
+                    # graph[i].append(u)
+        return dict(graph)
+
 
     def dfs(self, v_start, v_end=None) -> []:
         """
         TODO: Write this implementation
         """
-       
+        visited = []
+        out = []
+        self._dfs(v_start, v_end, visited, out)
+
+        return out
+        # use range
+        # for u in range(foo, v_end):
+
+    def _dfs(self, v_start, v_end=None, visited=[], ret=[]):
+
+        adj_list = self.convert_matrix_to_Adj_list(self.adj_matrix)
+
+        visited.append(v_start)
+        ret.append(v_start)
+        if v_start == v_end:
+            return (v_start, v_end, visited, ret)
+        stack = adj_list[v_start]
+        stack.sort()
+        for itm in stack:
+            if itm not in visited:
+                self._dfs(itm, v_end, visited, ret)
 
     def bfs(self, v_start, v_end=None) -> []:
         """
         TODO: Write this implementation
         """
+        adj_list = self.convert_matrix_to_Adj_list(self.adj_matrix)
+        visited = []
+        keys = []
+        for itm in self.get_vertices():
+            keys.append(itm)
+            visited.append(False)
+        ret = []
+        stack = []
+        stack.append(v_start)
+        visited[keys.index('{}'.format(v_start))] = True
+        while stack:
+            v_start = stack.pop(0)
+            ###
+            ret.append(keys.index('{}'.format(v_start)))
+            if v_start == v_end:
+                break
+            to_append = []
+            for i in adj_list[v_start]:
+                if visited[keys.index('{}'.format(i))] == False:
+                    to_append.append(i)
+                    visited[keys.index('{}'.format(i))] = True
+            to_append.sort()
+            for itm in to_append:
+                stack.append(itm)
+        ret2 = []
+        ctr = 0
+        while ctr < ret.__len__():
+            ret2.append(keys[ret[ctr]])
+            ctr = ctr + 1
+        ret3 = []
+        for i in ret2:
+            ret3.append(int(i))
+        return ret3
         
 
     def has_cycle(self):
