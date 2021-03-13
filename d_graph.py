@@ -5,7 +5,18 @@
 
 from collections import defaultdict
 from pprint import pprint
+import sys
+from heapq import heappop, heappush
 
+
+class Node:
+    def __init__(self, vertex, weight):
+        self.vertex = vertex
+        self.weight = weight
+
+    # Override the `__lt__()` function to make `Node` class work with a min-heap
+    def __lt__(self, other):
+        return self.weight < other.weight
 
 class DirectedGraph:
     """
@@ -242,45 +253,125 @@ class DirectedGraph:
                     return True
         return False
 
-    def dijkstra(self, src: int) -> []:
-        """
-        TODO: Write this implementation
-        """
+    # def dijkstra(self, src: int) -> []:
+    #     """
+    #     TODO: Write this implementation
+    #     """
 
-    # def dijsktra(self, initial):
-    #     nodes = set()
-    #
-    #     adj_list = self.convert_matrix_to_Adj_list(self.adj_matrix)
-    #     for node in adj_list:
-    #         nodes.add(node)
-    #
-    #     visited = {initial: 0}
-    #     path = {}
-    #
-    #     nodes = set(nodes)
-    #
-    #     while nodes:
-    #         min_node = None
-    #         for node in nodes:
-    #             if node in visited:
-    #                 if min_node is None:
-    #                     min_node = node
-    #                 elif visited[node] < visited[min_node]:
-    #                     min_node = node
-    #
-    #         if min_node is None:
-    #             break
-    #
-    #         nodes.remove(min_node)
-    #         current_weight = visited[min_node]
-    #
-    #         for edge in self.get_edges()[min_node]:
-    #             weight = current_weight + graph.distance[(min_node, edge)]
-    #             if edge not in visited or weight < visited[edge]:
-    #                 visited[edge] = weight
-    #                 path[edge] = min_node
-    #
-    #     return visited, path
+    def dijkstra(self, initial):
+        nodes = []
+
+        adj_list = self.convert_matrix_to_Adj_list(self.adj_matrix)
+        for node in adj_list:
+            nodes.append(node)
+
+        visited = {initial: 0}
+        path = {}
+
+
+        while nodes:
+            min_node = None
+            for node in nodes:
+                if node in visited:
+                    if min_node is None:
+                        min_node = node
+                    elif visited[node] < visited[min_node]:
+                        min_node = node
+
+            if min_node is None:
+                break
+
+            nodes.remove(min_node)
+            current_weight = visited[min_node]
+
+            edges = self.get_edges()[min_node]
+
+            for edge in edges:
+                weight = current_weight + edges[2]
+                if edge not in visited or weight < visited[edge]:
+                    visited[edge] = weight
+                    path[edge] = min_node
+
+        # return visited, path
+        return visited
+
+    def dijkstra_2(self, start):
+        nodes = self.get_vertices()
+        meow = self.convert_matrix_to_Adj_list(self.adj_matrix)
+        distances = dict(meow)
+        unvisited = {node: None for node in nodes} #using None as +inf
+        visited = {}
+        current = start
+        currentDistance = 0
+        unvisited[current] = currentDistance
+
+        while True:
+            for neighbour, distance in distances[current].items():
+                if neighbour not in unvisited: continue
+                newDistance = currentDistance + distance
+                if unvisited[neighbour] is None or unvisited[neighbour] > newDistance:
+                    unvisited[neighbour] = newDistance
+            visited[current] = currentDistance
+            del unvisited[current]
+            if not unvisited: break
+            candidates = [node for node in unvisited.items() if node[1]]
+            current, currentDistance = sorted(candidates, key = lambda x: x[1])[0]
+
+        print(visited)
+
+    def get_route(self, prev, i, route):
+        if i >= 0:
+            self.get_route(prev, prev[i], route)
+            route.append(i)
+
+    # Run Dijkstra’s algorithm on a given graph
+    def findShortestPaths(self, source):
+        N = self.v_count
+
+        # create a min-heap and push source node having distance 0
+        pq = []
+        heappush(pq, Node(source, 0))
+
+        # set initial distance from the source to `v` as INFINITY
+        dist = [sys.maxsize] * N
+
+        # distance from the source to itself is zero
+        dist[source] = 0
+
+        # list to track vertices for which minimum cost is already found
+        done = [False] * N
+        done[source] = True
+
+        # stores predecessor of a vertex (to a print path)
+        prev = [-1] * N
+        route = []
+
+        # run till min-heap is empty
+        while pq:
+
+            node = heappop(pq)  # Remove and return the best vertex
+            u = node.vertex  # get the vertex number
+
+            # do for each neighbor `v` of `u`
+            for edge in self.get_edges():
+                v = edge[1]
+                weight = edge[2]
+
+                # Relaxation step
+                if not done[v] and (dist[u] + weight) < dist[v]:
+                    dist[v] = dist[u] + weight
+                    prev[v] = u
+                    heappush(pq, Node(v, dist[v]))
+
+            # mark vertex `u` as done so it will not get picked up again
+            done[u] = True
+
+        for i in range(1, N):
+            if i != source and dist[i] != sys.maxsize:
+                self.get_route(prev, i, route)
+                print(f"Path ({source} —> {i}): Minimum cost = {dist[i]}, Route = {route}")
+                route.clear()
+
 
 
 if __name__ == '__main__':
