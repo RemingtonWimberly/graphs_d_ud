@@ -227,98 +227,83 @@ class DirectedGraph:
             ret3.append(int(i))
         return ret3
 
-    def _has_cycle(self, v, visited, recStack):
+    def _has_cycle(self, v, visited, stack):
+        """
+        has cycle helper function
+        """
         adj_list = self.convert_matrix_to_Adj_list(self.adj_matrix)
         visited[v] = True
-        recStack[v] = True
+        stack[v] = True
 
         for neighbour in adj_list[v]:
             if not visited[neighbour]:
-                if self._has_cycle(neighbour, visited, recStack):
+                if self._has_cycle(neighbour, visited, stack):
                     return True
-            elif recStack[neighbour]:
+            elif stack[neighbour]:
                 return True
-        recStack[v] = False
+        stack[v] = False
         return False
 
     def has_cycle(self):
         """
-        TODO: Write this implementation
+        This method returns True if there is at least one cycle in the graph. If the graph is acyclic,
+        the method returns False.
         """
         visited = [False] * len(self.get_vertices())
-        recStack = [False] * len(self.get_vertices())
+        stack = [False] * len(self.get_vertices())
         for node in range(len(self.get_vertices())):
             if not visited[node]:
-                if self._has_cycle(node, visited, recStack):
+                if self._has_cycle(node, visited, stack):
                     return True
         return False
 
-    # def dijkstra(self, src: int) -> []:
-    #     """
-    #     TODO: Write this implementation
-    #     """
-
-    def dijkstra(self, initial):
-        return self._dijkstra(self.adj_matrix, initial)
-
-    def _dijkstra(self, graph, start):
-
-        """
-        redo this one
-
-
-        :param graph:
-        :param start:
-        :return:
+    def dijkstra(self, start):
         """
 
+        This method implements the Dijkstra algorithm to compute the length of the shortest path
+        from a given vertex to all other vertices in the graph. It returns a list with one value per
+        each vertex in the graph, where value at index 0 is the length of the shortest path from
+        vertex SRC to vertex 0, value at index 1 is the length of the shortest path from vertex SRC
+        to vertex 1 etc. If the node is not reachable from source, returned value is infinity
+
+        :param start: Starting node
+        :return: an array of shortest distances from start node to every other node
         """
-        Implementation of dijkstra using adjacency matrix.
-        This returns an array containing the length of the shortest path from the start node to each other node.
-        It is only guaranteed to return correct results if there are no negative edges in the graph. Positive cycles are fine.
-        This has a runtime of O(|V|^2) (|V| = number of Nodes), for a faster implementation see @see ../fast/Dijkstra.java (using adjacency lists)
 
-        :param graph: an adjacency-matrix-representation of the graph where (x,y) is the weight of the edge or 0 if there is no edge.
-        :param start: the node to start from.
-        :return: an array containing the shortest distances from the given start node to each other node
-        """
-        # This contains the distances from the start node to all other nodes
-        distances = [float("inf") for _ in range(len(graph))]
+        distances_list = [float("inf")] * len(self.get_vertices())
+        # set distance from start node to start node to zero
+        distances_list[start] = 0
 
-        # This contains whether a node was already visited
-        visited = [False for _ in range(len(graph))]
+        visited_list = [False] * len(self.get_vertices())
 
-        # The distance from the start node to itself is of course 0
-        distances[start] = 0
 
-        # While there are nodes left to visit...
+        # while all node have not been visited
         while True:
 
-            # ... find the node with the currently shortest distance from the start node...
             shortest_distance = float("inf")
-            shortest_index = -1
-            for i in range(len(graph)):
-                # ... by going through all nodes that haven't been visited yet
-                if distances[i] < shortest_distance and not visited[i]:
-                    shortest_distance = distances[i]
-                    shortest_index = i
+            shortest_path_index = -1
+            # get node with shortest distance from the start node
+            for vertices in range(len(self.adj_matrix)):
+                if distances_list[vertices] < shortest_distance and not visited_list[vertices]:
+                    shortest_distance = distances_list[vertices]
+                    # updates the shortest index to the node that has a path distance is less than inf and is not visited
+                    shortest_path_index = vertices
 
-            # print("Visiting node " + str(shortest_index) + " with current distance " + str(shortest_distance))
+            print("Visiting node " + str(shortest_path_index) + " with current distance " + str(shortest_distance))
 
-            if shortest_index == -1:
-                # There was no node not yet visited --> We are done
-                return distances
+            if shortest_path_index == -1:
+                # all nodes have been visited and the shortest index is -1, dist is inf
+                return distances_list
 
-            # ...then, for all neighboring nodes that haven't been visited yet....
-            for i in range(len(graph[shortest_index])):
-                # ...if the path over this edge is shorter...
-                if graph[shortest_index][i] != 0 and distances[i] > distances[shortest_index] + graph[shortest_index][i]:
-                    # ...Save this path as new shortest path.
-                    distances[i] = distances[shortest_index] + graph[shortest_index][i]
-                    # print("Updating distance of node " + str(i) + " to " + str(distances[i]))
+            # neighboring nodes not visited
+            for vertices in range(len(self.adj_matrix[shortest_path_index])):
+                # if the edge path is shorter update shortest path
+                if distances_list[vertices] > distances_list[shortest_path_index] + self.adj_matrix[shortest_path_index][vertices] and self.adj_matrix[shortest_path_index][vertices] != 0:
+                    distances_list[vertices] = distances_list[shortest_path_index] + self.adj_matrix[shortest_path_index][vertices]
+                    print("Updating distance of node " + str(vertices) + " to " + str(distances_list[vertices]))
 
-            # Lastly, note that we are finished with this node.
-            visited[shortest_index] = True
+            # mark visited as true
+            visited_list[shortest_path_index] = True
 
 
 
