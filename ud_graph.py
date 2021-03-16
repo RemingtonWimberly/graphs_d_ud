@@ -50,9 +50,6 @@ class UndirectedGraph:
         if v not in self.adj_list:
             self.adj_list[v] = []
 
-
-
-        
     def add_edge(self, u: str, v: str) -> None:
         """
         TODO: Write this implementation
@@ -63,7 +60,6 @@ class UndirectedGraph:
             self.add_vertex(v)
         self.adj_list[u].append(v)
         self.adj_list[v].append(u)
-
 
     def remove_edge(self, v: str, u: str) -> None:
         """
@@ -177,7 +173,6 @@ class UndirectedGraph:
             if itm not in visited:
                 self._dfs(itm, v_end, visited, ret)
 
-
     def bfs(self, v_start, v_end=None) -> []:
         """
         TODO: Write this implementation
@@ -212,54 +207,72 @@ class UndirectedGraph:
             ctr = ctr + 1
         return ret2
 
+    def DFSUtil(self, temp, v, visited):
+
+        # Mark the current vertex as visited
+        visited[v] = True
+
+        # Store the vertex to list
+        temp.append(v)
+
+        # Repeat for all vertices adjacent
+        # to this vertex v
+        for vertex in self.adj_list[v]:
+            if visited[vertex] == False:
+                # Update the list
+                temp = self.DFSUtil(temp, vertex, visited)
+        return temp
+
+
     def count_connected_components(self):
         """
         TODO: Write this implementation
         """
-
-    # def has_cycle(self):
-    #     """
-    #     TODO: Write this implementation
-    #     """
+        visited = {node: False for node in self.adj_list}
+        connected_sections = []
+        for vertex in self.adj_list:
+            if not visited[vertex]:
+                temp = []
+                connected_sections.append(self.DFSUtil(temp, vertex, visited))
+        return len(connected_sections)
 
     def has_cycle(self):
         """
         redo make clean
         :return:
         """
-        marked = {u: False for u in self.adj_list}  # - All nodes are initially unmarked.
-        found_cycle = [False]  # - Define found_cycle as a list so we can change
-        # its value per reference, see:
-        # http://stackoverflow.com/questions/11222440/python-variable-reference-assignment
-
-        for u in self.adj_list:  # - Visit all nodes.
-            if not marked[u]:
-                self.dfs_visit(self.adj_list, u, found_cycle, u, marked)  # - u is its own predecessor initially
+        visited = {node: False for node in self.adj_list}
+        found_cycle = [False]
+        for node in self.adj_list:  # - Visit all nodes.
+            if not visited[node]:
+                self.dfs_visit(self.adj_list, node, found_cycle, node, visited)  # - u is its own predecessor initially
             if found_cycle[0]:
                 break
         return found_cycle[0]
 
-    # --------
-
-    def dfs_visit(self, G, u, found_cycle, pred_node, marked):
+    def dfs_visit(self, adj_list, current_node, found_cycle, previous, visited):
         """
-        make clean
-        :param G:
-        :param u:
-        :param found_cycle:
-        :param pred_node:
-        :param marked:
-        :return:
+        helper function for has_cycle. Determines if there is a cycle using dfs.
+        :param adj_list: an adjacency list
+        :param current_node: the current node in the adjacency list
+        :param found_cycle: Whether a cycle has been found
+        :param previous: the previous node
+        :param visited: list of whether the nodes have been visited or not
+        :return: Boolean of if the cycle has been found
         """
         if found_cycle[0]:  # - Stop dfs if cycle is found.
             return
-        marked[u] = True  # - Mark node.
-        for v in G[u]:  # - Check neighbors, where G[u] is the adjacency list of u.
-            if marked[v] and v != pred_node:  # - If neighbor is marked and not predecessor,
-                found_cycle[0] = True  # then a cycle exists.
+        # mark visited as true
+        visited[current_node] = True
+        # iterate through the neighbors
+        for neighbor in adj_list[current_node]:
+            # if the neighbor node is visited and not the previous node
+            if visited[neighbor] and neighbor != previous:
+                # cycle exists
+                found_cycle[0] = True
                 return
-            if not marked[v]:  # - Call dfs_visit recursively.
-                self.dfs_visit(G, v, found_cycle, u, marked)
+            if not visited[neighbor]:
+                self.dfs_visit(adj_list, neighbor, found_cycle, current_node, visited)
 
 
 if __name__ == '__main__':
@@ -280,7 +293,6 @@ if __name__ == '__main__':
         g.add_edge(u, v)
     print(g)
 
-
     print("\nPDF - method remove_edge() / remove_vertex example 1")
     print("----------------------------------------------------")
     g = UndirectedGraph(['AB', 'AC', 'BC', 'BD', 'CD', 'CE', 'DE'])
@@ -293,7 +305,6 @@ if __name__ == '__main__':
     print(g)
     print(g)
 
-
     print("\nPDF - method get_vertices() / get_edges() example 1")
     print("---------------------------------------------------")
     g = UndirectedGraph()
@@ -302,14 +313,12 @@ if __name__ == '__main__':
     print(g)
     print(g.get_edges(), g.get_vertices(), sep='\n')
 
-
     print("\nPDF - method is_valid_path() example 1")
     print("--------------------------------------")
     g = UndirectedGraph(['AB', 'AC', 'BC', 'BD', 'CD', 'CE', 'DE'])
     test_cases = ['ABC', 'ADE', 'ECABDCBE', 'ACDECB', '', 'D', 'Z']
     for path in test_cases:
         print(list(path), g.is_valid_path(list(path)))
-
 
     print("\nPDF - method dfs() and bfs() example 1")
     print("--------------------------------------")
@@ -322,7 +331,6 @@ if __name__ == '__main__':
     for i in range(1, len(test_cases)):
         v1, v2 = test_cases[i], test_cases[-1 - i]
         print(f'{v1}-{v2} DFS:{g.dfs(v1, v2)} BFS:{g.bfs(v1, v2)}')
-
 
     print("\nPDF - method count_connected_components() example 1")
     print("---------------------------------------------------")
@@ -339,7 +347,6 @@ if __name__ == '__main__':
         g.add_edge(u, v) if command == 'add' else g.remove_edge(u, v)
         print(g.count_connected_components(), end=' ')
     print()
-
 
     print("\nPDF - method has_cycle() example 1")
     print("----------------------------------")
