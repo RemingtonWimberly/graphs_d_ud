@@ -81,11 +81,11 @@ class UndirectedGraph:
         TODO: Write this implementation
         """
         if u not in self.get_vertices() or v not in self.get_vertices():
-            return None
+            return
         if u not in self.adj_list:
-            return None
+            return
         if v not in self.adj_list:
-            return None
+            return
 
         self.adj_list[v].remove(u)
         self.adj_list[u].remove(v)
