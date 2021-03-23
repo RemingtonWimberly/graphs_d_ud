@@ -62,12 +62,14 @@ class UndirectedGraph:
     #     self.adj_list[v].append(u)
 
     def add_edge(self, u, v):
-        if u not in self.adj_list:
-            self.adj_list[u] = [v]
-        if v not in self.adj_list:
-            self.adj_list[v] = [u]
+        if u not in self.adj_list.keys():
+            self.add_vertex(u)
+        if v not in self.adj_list.keys():
+            self.add_vertex(v)
+
         if v not in self.adj_list[u]:
             self.adj_list[u].append(v)
+
         if u not in self.adj_list[v]:
             self.adj_list[v].append(u)
 
