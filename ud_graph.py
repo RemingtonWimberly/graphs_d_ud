@@ -81,9 +81,9 @@ class UndirectedGraph:
         TODO: Write this implementation
         """
         if u not in self.adj_list:
-            return
+            return None
         if v not in self.adj_list:
-            return
+            return None
 
         self.adj_list[v].remove(u)
         self.adj_list[u].remove(v)
