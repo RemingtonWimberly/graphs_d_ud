@@ -168,6 +168,8 @@ class UndirectedGraph:
         """
         TODO: Write this implementation
         """
+        if v_start not in self.get_vertices():
+            return []
         if v_start == v_end:
             new_out = [v_start]
             return new_out
@@ -222,6 +224,8 @@ class UndirectedGraph:
         """
         TODO: Write this implementation
         """
+        if v_start not in self.get_vertices():
+            return []
         visited = []
         keys = []
         for itm in self.get_vertices():
@@ -251,22 +255,6 @@ class UndirectedGraph:
             ret2.append(keys[ret[ctr]])
             ctr = ctr + 1
         return ret2
-
-    def DFSUtil(self, temp, v, visited):
-
-        # Mark the current vertex as visited
-        visited[v] = True
-
-        # Store the vertex to list
-        temp.append(v)
-
-        # Repeat for all vertices adjacent
-        # to this vertex v
-        for vertex in self.adj_list[v]:
-            if visited[vertex] == False:
-                # Update the list
-                temp = self.DFSUtil(temp, vertex, visited)
-        return temp
 
 
     def count_connected_components(self):
