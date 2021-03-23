@@ -168,25 +168,55 @@ class UndirectedGraph:
         """
         TODO: Write this implementation
         """
+        if v_start == v_end:
+            new_out = [v_start]
+            return new_out
+
         visited = []
         out = []
         self._dfs(v_start, v_end, visited, out)
 
-        return out
-        # use range
-        # for u in range(foo, v_end):
+        new_out = []
+
+        for i in out:
+            new_out.append(i)
+            if i == v_end:
+                break
+        return new_out
+
 
     def _dfs(self, v_start, v_end=None, visited=[], ret=[]):
 
         visited.append(v_start)
+        # if v_end in visited:
+        # if v_start == v_end:
+        #     return ("end", v_end, visited, visited)
         ret.append(v_start)
-        if v_start == v_end:
-            return ("end", v_end, visited, ret)
         stack = self.adj_list[v_start]
         stack.sort()
         for itm in stack:
             if itm not in visited:
                 self._dfs(itm, v_end, visited, ret)
+
+    # def dfsu(self, v_start, vis, path, v_end):
+    #     vis.add(v_start)
+    #     if v_start == v_end:
+    #         return ('end',vis, path, v_end)
+    #     path.append(v_start)
+    #     for u in self.adj_list[v_start]:
+    #         if u in vis:
+    #             continue
+    #         self.dfsu(u, vis, path, v_end)
+    #
+    # def dfs(self, v_start, v_end=None) -> []:
+    #     """
+    #     Return list of vertices visited during DFS search
+    #     Vertices are picked in alphabetical order
+    #     """
+    #     vis = set()
+    #     path = []
+    #     self.dfsu(v_start, vis, path, v_end)
+    #     return path
 
     def bfs(self, v_start, v_end=None) -> []:
         """
