@@ -80,6 +80,8 @@ class UndirectedGraph:
         """
         TODO: Write this implementation
         """
+        if u not in self.get_vertices() or v not in self.get_vertices():
+            return None
         if u not in self.adj_list:
             return None
         if v not in self.adj_list:
