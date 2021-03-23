@@ -50,16 +50,26 @@ class UndirectedGraph:
         if v not in self.adj_list:
             self.adj_list[v] = []
 
-    def add_edge(self, u: str, v: str) -> None:
-        """
-        TODO: Write this implementation
-        """
+    # def add_edge(self, u: str, v: str) -> None:
+    #     """
+    #     TODO: Write this implementation
+    #     """
+    #     if u not in self.adj_list:
+    #         self.add_vertex(u)
+    #     if v not in self.adj_list:
+    #         self.add_vertex(v)
+    #     self.adj_list[u].append(v)
+    #     self.adj_list[v].append(u)
+
+    def add_edge(self, u, v):
         if u not in self.adj_list:
-            self.add_vertex(u)
+            self.adj_list[u] = [v]
         if v not in self.adj_list:
-            self.add_vertex(v)
-        self.adj_list[u].append(v)
-        self.adj_list[v].append(u)
+            self.adj_list[v] = [u]
+        if v not in self.adj_list[u]:
+            self.adj_list[u].append(v)
+        if u not in self.adj_list[v]:
+            self.adj_list[v].append(u)
 
     def remove_edge(self, v: str, u: str) -> None:
         """
@@ -363,3 +373,12 @@ if __name__ == '__main__':
         u, v = edge
         g.add_edge(u, v) if command == 'add' else g.remove_edge(u, v)
         print('{:<10}'.format(case), g.has_cycle())
+
+    g = {
+      J: ['A', 'I']
+      A: ['J', 'I']
+      D: ['C']
+      C: ['D']
+      I: ['J', 'A']
+      G: ['B']
+      B: ['G']}
