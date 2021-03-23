@@ -374,11 +374,3 @@ if __name__ == '__main__':
         g.add_edge(u, v) if command == 'add' else g.remove_edge(u, v)
         print('{:<10}'.format(case), g.has_cycle())
 
-    g = {
-      J: ['A', 'I']
-      A: ['J', 'I']
-      D: ['C']
-      C: ['D']
-      I: ['J', 'A']
-      G: ['B']
-      B: ['G']}
