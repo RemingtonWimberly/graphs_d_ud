@@ -289,7 +289,6 @@ class DirectedGraph:
                     # updates the shortest index to the node that has a path distance is less than inf and is not visited
                     shortest_path_index = vertices
 
-            print("Visiting node " + str(shortest_path_index) + " with current distance " + str(shortest_distance))
 
             if shortest_path_index == -1:
                 # all nodes have been visited and the shortest index is -1, dist is inf
@@ -300,7 +299,6 @@ class DirectedGraph:
                 # if the edge path is shorter update shortest path
                 if distances_list[vertices] > distances_list[shortest_path_index] + self.adj_matrix[shortest_path_index][vertices] and self.adj_matrix[shortest_path_index][vertices] != 0:
                     distances_list[vertices] = distances_list[shortest_path_index] + self.adj_matrix[shortest_path_index][vertices]
-                    print("Updating distance of node " + str(vertices) + " to " + str(distances_list[vertices]))
 
             # mark visited as true
             visited_list[shortest_path_index] = True
@@ -309,6 +307,7 @@ class DirectedGraph:
 
 
 if __name__ == '__main__':
+
     print("\nPDF - method add_vertex() / add_edge example 1")
     print("----------------------------------------------")
     g = DirectedGraph()
@@ -316,6 +315,8 @@ if __name__ == '__main__':
     for _ in range(5):
         g.add_vertex()
     print(g)
+
+    practice_edges = [()]
 
     edges = [(0, 1, 10), (4, 0, 12), (1, 4, 15), (4, 3, 3),
              (3, 1, 5), (2, 1, 23), (3, 2, 7)]
