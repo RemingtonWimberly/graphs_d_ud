@@ -62,6 +62,9 @@ class UndirectedGraph:
     #     self.adj_list[v].append(u)
 
     def add_edge(self, u, v):
+
+        if u == v:
+            return
         if u not in self.adj_list.keys():
             self.add_vertex(u)
         if v not in self.adj_list.keys():
