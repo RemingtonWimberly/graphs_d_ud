@@ -256,6 +256,22 @@ class UndirectedGraph:
             ctr = ctr + 1
         return ret2
 
+    def DFSUtil(self, temp, v, visited):
+
+        # Mark the current vertex as visited
+        visited[v] = True
+
+        # Store the vertex to list
+        temp.append(v)
+
+        # Repeat for all vertices adjacent
+        # to this vertex v
+        for vertex in self.adj_list[v]:
+            if visited[vertex] == False:
+                # Update the list
+                temp = self.DFSUtil(temp, vertex, visited)
+        return temp
+
 
     def count_connected_components(self):
         """
