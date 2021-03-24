@@ -212,6 +212,8 @@ class DirectedGraph:
         #         self._dfs(itm, v_end, visited, ret)
         visited.append(v_start)
         ret.append(v_start)
+        if not adj_list[v_start]:
+            return [v_start]
         stack = adj_list[v_start]
         stack.sort()
         for itm in stack:
