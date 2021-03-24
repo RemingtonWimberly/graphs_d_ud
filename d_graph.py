@@ -103,7 +103,7 @@ class DirectedGraph:
         meow = list(range(len(self.adj_matrix)))
         meow2 = []
         for i in meow:
-            meow2.append(str(i))
+            meow2.append(i)
 
         return meow2
 
