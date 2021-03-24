@@ -100,27 +100,22 @@ class DirectedGraph:
         """
         TODO: Write this implementation
         """
-        # return list(range(len(self.adj_matrix)))
 
-        meow = list(range(len(self.adj_matrix)))
-        meow2 = []
-        for i in meow:
-            meow2.append(i)
+        verticies = []
+        for i in list(range(len(self.adj_matrix))):
+            verticies.append(i)
 
-        return meow2
+        return verticies
 
-    def _get_vertices(self) -> []:
+    def get_string_vertices(self) -> []:
         """
         TODO: Write this implementation
         """
-        # return list(range(len(self.adj_matrix)))
+        verticies = []
+        for i in list(range(len(self.adj_matrix))):
+            verticies.append(str(i))
 
-        meow = list(range(len(self.adj_matrix)))
-        meow2 = []
-        for i in meow:
-            meow2.append(str(i))
-
-        return meow2
+        return verticies
 
     def get_v_string(self):
         meow = list(range(len(self.adj_matrix)))
@@ -205,7 +200,7 @@ class DirectedGraph:
         """
         TODO: Write this implementation
         """
-        if str(v_start) not in self._get_vertices():
+        if str(v_start) not in self.get_string_vertices():
             return []
         if v_start == v_end:
             new_out = [v_start]
@@ -243,7 +238,7 @@ class DirectedGraph:
         adj_list = dict(self.convert_matrix_to_Adj_list(self.adj_matrix))
         visited = []
         keys = []
-        for itm in self._get_vertices():
+        for itm in self.get_string_vertices():
             keys.append(itm)
             visited.append(False)
         ret = []
@@ -296,9 +291,9 @@ class DirectedGraph:
         This method returns True if there is at least one cycle in the graph. If the graph is acyclic,
         the method returns False.
         """
-        visited = [False] * len(self._get_vertices())
-        stack = [False] * len(self._get_vertices())
-        for node in range(len(self._get_vertices())):
+        visited = [False] * len(self.get_string_vertices())
+        stack = [False] * len(self.get_string_vertices())
+        for node in range(len(self.get_string_vertices())):
             if not visited[node]:
                 if self._has_cycle(node, visited, stack):
                     return True
@@ -317,11 +312,11 @@ class DirectedGraph:
         :return: an array of shortest distances from start node to every other node
         """
 
-        distances_list = [float("inf")] * len(self._get_vertices())
+        distances_list = [float("inf")] * len(self.get_string_vertices())
         # set distance from start node to start node to zero
         distances_list[start] = 0
 
-        visited_list = [False] * len(self._get_vertices())
+        visited_list = [False] * len(self.get_string_vertices())
 
 
         # while all node have not been visited
@@ -374,11 +369,11 @@ if __name__ == '__main__':
     print("\nPDF - method get_edges() example 1")
     print("----------------------------------")
     g = DirectedGraph()
-    print(g.get_edges(), g._get_vertices(), sep='\n')
+    print(g.get_edges(), g.get_string_vertices(), sep='\n')
     edges = [(0, 1, 10), (4, 0, 12), (1, 4, 15), (4, 3, 3),
              (3, 1, 5), (2, 1, 23), (3, 2, 7)]
     g = DirectedGraph(edges)
-    print(g.get_edges(), g._get_vertices(), sep='\n')
+    print(g.get_edges(), g.get_string_vertices(), sep='\n')
 
     print("\nPDF - method is_valid_path() example 1")
     print("--------------------------------------")
