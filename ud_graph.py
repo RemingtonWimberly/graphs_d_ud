@@ -50,17 +50,6 @@ class UndirectedGraph:
         if v not in self.adj_list:
             self.adj_list[v] = []
 
-    # def add_edge(self, u: str, v: str) -> None:
-    #     """
-    #     TODO: Write this implementation
-    #     """
-    #     if u not in self.adj_list:
-    #         self.add_vertex(u)
-    #     if v not in self.adj_list:
-    #         self.add_vertex(v)
-    #     self.adj_list[u].append(v)
-    #     self.adj_list[v].append(u)
-
     def add_edge(self, u, v):
 
         if u == v:
@@ -82,9 +71,9 @@ class UndirectedGraph:
         """
         if u not in self.get_vertices() or v not in self.get_vertices():
             return
-        if u not in self.adj_list:
-            return
-        if v not in self.adj_list:
+
+        edges = self.get_edges()
+        if (str(v), str(u)) not in edges:
             return
 
         self.adj_list[v].remove(u)
