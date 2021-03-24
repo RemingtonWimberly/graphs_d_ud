@@ -179,7 +179,7 @@ class DirectedGraph:
         """
         TODO: Write this implementation
         """
-        if v_start not in self.get_vertices():
+        if str(v_start) not in self.get_vertices():
             return []
         if v_start == v_end:
             new_out = [v_start]
@@ -211,9 +211,6 @@ class DirectedGraph:
         #     if itm not in visited:
         #         self._dfs(itm, v_end, visited, ret)
         visited.append(v_start)
-        # if v_end in visited:
-        # if v_start == v_end:
-        #     return ("end", v_end, visited, visited)
         ret.append(v_start)
         stack = adj_list[v_start]
         stack.sort()
