@@ -81,7 +81,7 @@ class DirectedGraph:
         """
         TODO: Write this implementation
         """
-        if src >= self.v_count or dst >= self.v_count or weight <= 0:
+        if src >= self.v_count or dst >= self.v_count or weight <= 0 or src == dst:
             # if src >= self.v_count or dst >= self.v_count or weight <= 0 or src == dst:
             return
         self.adj_matrix[src][dst] = weight
