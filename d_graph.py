@@ -213,7 +213,8 @@ class DirectedGraph:
 
         visited = []
         out = []
-        self._dfs(v_start, v_end, visited, out)
+        adj_list = dict(self.convert_matrix_to_Adj_list(self.adj_matrix))
+        self._dfs(adj_list, v_start, v_end, visited, out)
 
         new_out = []
 
@@ -223,19 +224,8 @@ class DirectedGraph:
                 break
         return new_out
 
-    def _dfs(self, v_start, v_end=None, visited=[], ret=[]):
+    def _dfs(self,adj_list, v_start, v_end=None, visited=[], ret=[]):
 
-        adj_list = dict(self.convert_matrix_to_Adj_list(self.adj_matrix))
-
-        # visited.append(v_start)
-        # ret.append(v_start)
-        # if v_start == v_end:
-        #     return (v_start, v_end, visited, ret)
-        # stack = adj_list[v_start]
-        # stack.sort()
-        # for itm in stack:
-        #     if itm not in visited:
-        #         self._dfs(itm, v_end, visited, ret)
         visited.append(v_start)
         ret.append(v_start)
         if not adj_list[v_start]:
@@ -244,7 +234,7 @@ class DirectedGraph:
         stack.sort()
         for itm in stack:
             if itm not in visited:
-                self._dfs(itm, v_end, visited, ret)
+                self._dfs(adj_list, itm, v_end, visited, ret)
 
     def bfs(self, v_start, v_end=None) -> []:
         """
