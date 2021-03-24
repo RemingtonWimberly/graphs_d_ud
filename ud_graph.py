@@ -202,26 +202,6 @@ class UndirectedGraph:
             if itm not in visited:
                 self._dfs(itm, v_end, visited, ret)
 
-    # def dfsu(self, v_start, vis, path, v_end):
-    #     vis.add(v_start)
-    #     if v_start == v_end:
-    #         return ('end',vis, path, v_end)
-    #     path.append(v_start)
-    #     for u in self.adj_list[v_start]:
-    #         if u in vis:
-    #             continue
-    #         self.dfsu(u, vis, path, v_end)
-    #
-    # def dfs(self, v_start, v_end=None) -> []:
-    #     """
-    #     Return list of vertices visited during DFS search
-    #     Vertices are picked in alphabetical order
-    #     """
-    #     vis = set()
-    #     path = []
-    #     self.dfsu(v_start, vis, path, v_end)
-    #     return path
-
     def bfs(self, v_start, v_end=None) -> []:
         """
         TODO: Write this implementation
