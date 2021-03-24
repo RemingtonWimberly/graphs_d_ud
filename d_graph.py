@@ -90,7 +90,7 @@ class DirectedGraph:
         """
         TODO: Write this implementation
         """
-        if dst >= self.v_count or src >= self.v_count:
+        if dst >= self.v_count or src >= self.v_count or (src, dst) not in self.get_new_edges():
             return
         self.adj_matrix[src][dst] = 0
 
@@ -134,6 +134,17 @@ class DirectedGraph:
         edges = self._get_edges(self.adj_matrix)
         for i in edges:
             edge_list.append(i)
+
+        return edge_list
+
+    def get_new_edges(self) -> []:
+        """
+        TODO: Write this implementation
+        """
+        edge_list = []
+        edges = self._get_edges(self.adj_matrix)
+        for i in edges:
+            edge_list.append(i[0:2])
 
         return edge_list
 
