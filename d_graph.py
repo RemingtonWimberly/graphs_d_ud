@@ -163,26 +163,58 @@ class DirectedGraph:
                     # graph[i].append(u)
         return graph
 
+    # def dfs(self, v_start, v_end=None) -> []:
+    #     """
+    #     TODO: Write this implementation
+    #     """
+    #     visited = []
+    #     out = []
+    #     self._dfs(v_start, v_end, visited, out)
+    #
+    #     return out
+    #     # use range
+    #     # for u in range(foo, v_end):
+
     def dfs(self, v_start, v_end=None) -> []:
         """
         TODO: Write this implementation
         """
+        if v_start not in self.get_vertices():
+            return []
+        if v_start == v_end:
+            new_out = [v_start]
+            return new_out
+
         visited = []
         out = []
         self._dfs(v_start, v_end, visited, out)
 
-        return out
-        # use range
-        # for u in range(foo, v_end):
+        new_out = []
+
+        for i in out:
+            new_out.append(i)
+            if i == v_end:
+                break
+        return new_out
 
     def _dfs(self, v_start, v_end=None, visited=[], ret=[]):
 
         adj_list = dict(self.convert_matrix_to_Adj_list(self.adj_matrix))
 
+        # visited.append(v_start)
+        # ret.append(v_start)
+        # if v_start == v_end:
+        #     return (v_start, v_end, visited, ret)
+        # stack = adj_list[v_start]
+        # stack.sort()
+        # for itm in stack:
+        #     if itm not in visited:
+        #         self._dfs(itm, v_end, visited, ret)
         visited.append(v_start)
+        # if v_end in visited:
+        # if v_start == v_end:
+        #     return ("end", v_end, visited, visited)
         ret.append(v_start)
-        if v_start == v_end:
-            return (v_start, v_end, visited, ret)
         stack = adj_list[v_start]
         stack.sort()
         for itm in stack:
