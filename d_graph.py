@@ -90,7 +90,9 @@ class DirectedGraph:
         """
         TODO: Write this implementation
         """
-        if dst >= self.v_count or src >= self.v_count or (src, dst) not in self.get_new_edges():
+        if dst >= self.v_count or src >= self.v_count:
+            return
+        if (src, dst) not in self.get_new_edges() and (dst,src) not in self.get_new_edges():
             return
         self.adj_matrix[src][dst] = 0
 
