@@ -70,11 +70,10 @@ class UndirectedGraph:
         TODO: Write this implementation
         """
         if u not in self.adj_list.keys() or v not in self.adj_list.keys():
-            return None
+            return
 
-        edges = self.get_edges()
-        if (v, u) not in edges:
-            return None
+        if (v, u) not in self.get_edges():
+            return
 
         self.adj_list[v].remove(u)
         self.adj_list[u].remove(v)
