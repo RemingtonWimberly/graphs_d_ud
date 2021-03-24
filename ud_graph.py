@@ -69,12 +69,12 @@ class UndirectedGraph:
         """
         TODO: Write this implementation
         """
-        if u not in self.get_vertices() or v not in self.get_vertices():
-            return
+        if u not in self.adj_list.keys() or v not in self.adj_list.keys():
+            return None
 
         edges = self.get_edges()
-        if (str(v), str(u)) not in edges:
-            return
+        if (v, u) not in edges:
+            return None
 
         self.adj_list[v].remove(u)
         self.adj_list[u].remove(v)
@@ -383,4 +383,5 @@ if __name__ == '__main__':
         u, v = edge
         g.add_edge(u, v) if command == 'add' else g.remove_edge(u, v)
         print('{:<10}'.format(case), g.has_cycle())
+
 
