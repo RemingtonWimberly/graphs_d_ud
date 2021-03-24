@@ -75,8 +75,20 @@ class UndirectedGraph:
         if (v, u) not in self.get_edges():
             return
 
-        self.adj_list[v].remove(u)
-        self.adj_list[u].remove(v)
+        for i in range(len(self.adj_list[u])):
+
+            if (self.adj_list[u][i] == v):
+                self.adj_list[u].pop(i);
+                break
+
+        for i in range(len(self.adj_list[v])):
+
+            if (self.adj_list[v][i] == u):
+                self.adj_list[v].pop(i);
+                break
+
+        # self.adj_list[v].remove(u)
+        # self.adj_list[u].remove(v)
 
     def remove_vertex(self, v: str) -> None:
         """
