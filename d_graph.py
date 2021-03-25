@@ -229,7 +229,7 @@ class DirectedGraph:
 
     def _bfs(self, start) -> []:
 
-        return_list = []
+        return_list = [start]
         queue = [start]
         visited = [False] * len(self.adj_matrix)
         visited[start] = True
