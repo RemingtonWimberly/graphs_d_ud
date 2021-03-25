@@ -117,15 +117,9 @@ class DirectedGraph:
 
         return verticies
 
-    def get_v_string(self):
-        meow = list(range(len(self.adj_matrix)))
-        meow2 = []
-        for i in meow:
-            meow2.append('{}'.format(i))
-
     def get_edges(self) -> []:
         """
-        TODO: Write this implementation
+        funciton to get the edges with the weights
         """
         edge_list = []
         edges = self._get_edges(self.adj_matrix)
@@ -136,7 +130,7 @@ class DirectedGraph:
 
     def get_new_edges(self) -> []:
         """
-        TODO: Write this implementation
+        function to get the edge without the weight
         """
         edge_list = []
         edges = self._get_edges(self.adj_matrix)
@@ -160,7 +154,7 @@ class DirectedGraph:
 
     def is_valid_path(self, path: []) -> bool:
         """
-        TODO: Write this implementation
+        determines if a path is valid
         """
         for i in range(len(path) - 1):
             if self.adj_matrix[path[i]][path[i + 1]] == 0:
@@ -169,6 +163,8 @@ class DirectedGraph:
         return True
 
     def convert_matrix_to_Adj_list(self, matrix):
+
+        """ Converts a matrix to an adjacency list"""
 
         l = matrix
 
@@ -184,21 +180,9 @@ class DirectedGraph:
                     # graph[i].append(u)
         return graph
 
-    # def dfs(self, v_start, v_end=None) -> []:
-    #     """
-    #     TODO: Write this implementation
-    #     """
-    #     visited = []
-    #     out = []
-    #     self._dfs(v_start, v_end, visited, out)
-    #
-    #     return out
-    #     # use range
-    #     # for u in range(foo, v_end):
-
     def dfs(self, v_start, v_end=None) -> []:
         """
-        TODO: Write this implementation
+        depth first search
         """
         if str(v_start) not in self.get_string_vertices():
             return []
@@ -220,7 +204,7 @@ class DirectedGraph:
         return new_out
 
     def _dfs(self,adj_list, v_start, v_end=None, visited=[], ret=[]):
-
+        """ DFS helper funciton """
         visited.append(v_start)
         ret.append(v_start)
         if not adj_list[v_start]:
@@ -232,42 +216,75 @@ class DirectedGraph:
                 self._dfs(adj_list, itm, v_end, visited, ret)
 
     def bfs(self, v_start, v_end=None) -> []:
-        """
-        TODO: Write this implementation
-        """
-        adj_list = dict(self.convert_matrix_to_Adj_list(self.adj_matrix))
-        visited = []
-        keys = []
-        for itm in self.get_string_vertices():
-            keys.append(itm)
-            visited.append(False)
-        ret = []
-        stack = []
-        stack.append(v_start)
-        visited[keys.index('{}'.format(v_start))] = True
-        while stack:
-            v_start = stack.pop(0)
-            ###
-            ret.append(keys.index('{}'.format(v_start)))
-            if v_start == v_end:
+
+        out = self._bfs(v_start)
+
+        new_out = []
+
+        for i in out:
+            new_out.append(i)
+            if i == v_end:
                 break
-            to_append = []
-            for i in adj_list[v_start]:
-                if visited[keys.index('{}'.format(i))] == False:
-                    to_append.append(i)
-                    visited[keys.index('{}'.format(i))] = True
-            to_append.sort()
-            for itm in to_append:
-                stack.append(itm)
-        ret2 = []
-        ctr = 0
-        while ctr < ret.__len__():
-            ret2.append(keys[ret[ctr]])
-            ctr = ctr + 1
-        ret3 = []
-        for i in ret2:
-            ret3.append(int(i))
-        return ret3
+        return new_out
+
+    def _bfs(self, start) -> []:
+
+        return_list = []
+        queue = [start]
+        visited = [False] * len(self.adj_matrix)
+        visited[start] = True
+        while len(queue) > 0:
+
+
+            node = queue.pop(0)
+
+            for i in range(len(self.adj_matrix[node])):
+                if self.adj_matrix[node][i] and not visited[i]:
+                    return_list.append(i)
+                    visited[i] = True
+                    queue.append(i)
+
+
+
+        return return_list
+
+    # def bfs(self, v_start, v_end=None) -> []:
+    #     """
+    #     breadth first search
+    #     """
+    #     adj_list = dict(self.convert_matrix_to_Adj_list(self.adj_matrix))
+    #     visited = []
+    #     keys = []
+    #     for itm in self.get_string_vertices():
+    #         keys.append(itm)
+    #         visited.append(False)
+    #     ret = []
+    #     stack = []
+    #     stack.append(v_start)
+    #     visited[keys.index('{}'.format(v_start))] = True
+    #     while stack:
+    #         v_start = stack.pop(0)
+    #         ###
+    #         ret.append(keys.index('{}'.format(v_start)))
+    #         if v_start == v_end:
+    #             break
+    #         to_append = []
+    #         for i in adj_list[v_start]:
+    #             if visited[keys.index('{}'.format(i))] == False:
+    #                 to_append.append(i)
+    #                 visited[keys.index('{}'.format(i))] = True
+    #         to_append.sort()
+    #         for itm in to_append:
+    #             stack.append(itm)
+    #     ret2 = []
+    #     ctr = 0
+    #     while ctr < ret.__len__():
+    #         ret2.append(keys[ret[ctr]])
+    #         ctr = ctr + 1
+    #     ret3 = []
+    #     for i in ret2:
+    #         ret3.append(int(i))
+    #     return ret3
 
     def _has_cycle(self, v, visited, stack):
         """
@@ -389,8 +406,8 @@ if __name__ == '__main__':
     edges = [(0, 1, 10), (4, 0, 12), (1, 4, 15), (4, 3, 3),
              (3, 1, 5), (2, 1, 23), (3, 2, 7)]
     g = DirectedGraph(edges)
-    for start in range(5):
-        print(f'{start} DFS:{g.dfs(start)} BFS:{g.bfs(start)}')
+    for v_start in range(5):
+        print(f'{v_start} DFS:{g.dfs(v_start)} BFS:{g.bfs(v_start)}')
 
     print("\nPDF - method has_cycle() example 1")
     print("----------------------------------")
