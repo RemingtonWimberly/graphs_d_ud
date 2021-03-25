@@ -42,7 +42,7 @@ class UndirectedGraph:
 
     def add_vertex(self, v: str) -> None:
         """
-        TODO: Write this implementation
+        adds a vertex to the graph
         """
         # SENTINEL = []
         # self.adj_list[v] = SENTINEL
@@ -51,6 +51,7 @@ class UndirectedGraph:
             self.adj_list[v] = []
 
     def add_edge(self, u, v):
+        """ adds an edge to the graph """
 
         if u == v:
             return
@@ -67,7 +68,7 @@ class UndirectedGraph:
 
     def remove_edge(self, v: str, u: str) -> None:
         """
-        TODO: Write this implementation
+        remove edge in the graph
         """
         if u not in self.adj_list.keys() or v not in self.adj_list.keys():
             return
@@ -80,7 +81,7 @@ class UndirectedGraph:
 
     def remove_vertex(self, v: str) -> None:
         """
-        TODO: Write this implementation
+        removes vertex in the graph
         """
         if v not in self.adj_list:
             return
@@ -92,7 +93,7 @@ class UndirectedGraph:
 
     def get_vertices(self) -> []:
         """
-        TODO: Write this implementation
+        returns the verticies in the graph
         """
         # vertices = list(self.adj_list.keys())
         # for key in self.adj_list.keys():
@@ -100,6 +101,7 @@ class UndirectedGraph:
         return list(self.adj_list.keys())
 
     def remove_duplicates(self, list):
+        """ removes duplicates in the list """
 
         output, seen = [], set()
         for item in list:
@@ -112,7 +114,7 @@ class UndirectedGraph:
 
     def get_edges(self) -> []:
         """
-        TODO: Write this implementation
+        returns all the edges in the graph
         """
         edges = []
         for k, v in self.adj_list.items():
@@ -126,13 +128,14 @@ class UndirectedGraph:
         # return edges
 
     def convert_string(self, string):
+        """ converts string to list """
         list = []
         list[:0] = string
         return list
 
     def is_valid_path(self, path: []) -> bool:
         """
-        TODO: Write this implementation
+        determines if path is valid
         """
         edges = []
         for k, v in self.adj_list.items():
@@ -156,7 +159,7 @@ class UndirectedGraph:
 
     def dfs(self, v_start, v_end=None) -> []:
         """
-        TODO: Write this implementation
+        Depth first search
         """
         if v_start not in self.get_vertices():
             return []
@@ -178,6 +181,7 @@ class UndirectedGraph:
 
 
     def _dfs(self, v_start, v_end=None, visited=[], ret=[]):
+        """ dfs helper funciton """
 
         visited.append(v_start)
         # if v_end in visited:
@@ -192,7 +196,7 @@ class UndirectedGraph:
 
     def bfs(self, v_start, v_end=None) -> []:
         """
-        TODO: Write this implementation
+        breadth first search
         """
         if v_start not in self.get_vertices():
             return []
@@ -226,45 +230,41 @@ class UndirectedGraph:
             ctr = ctr + 1
         return ret2
 
-    def DFSUtil(self, temp, v, visited):
-
+    def _count_connected_components(self, temp, v, visited):
+        """ count connected components helper function using dfs"""
         # Mark the current vertex as visited
         visited[v] = True
 
-        # Store the vertex to list
         temp.append(v)
 
-        # Repeat for all vertices adjacent
-        # to this vertex v
         for vertex in self.adj_list[v]:
             if visited[vertex] == False:
                 # Update the list
-                temp = self.DFSUtil(temp, vertex, visited)
+                temp = self._count_connected_components(temp, vertex, visited)
         return temp
 
 
     def count_connected_components(self):
         """
-        TODO: Write this implementation
+        counts the connected componets in the graph
         """
         visited = {node: False for node in self.adj_list}
         connected_sections = []
         for vertex in self.adj_list:
             if not visited[vertex]:
                 temp = []
-                connected_sections.append(self.DFSUtil(temp, vertex, visited))
+                connected_sections.append(self._count_connected_components(temp, vertex, visited))
         return len(connected_sections)
 
     def has_cycle(self):
         """
-        redo make clean
-        :return:
+        determines if there is a cycle in the graph
         """
         visited = {node: False for node in self.adj_list}
         found_cycle = [False]
-        for node in self.adj_list:  # - Visit all nodes.
+        for node in self.adj_list:
             if not visited[node]:
-                self.dfs_visit(self.adj_list, node, found_cycle, node, visited)  # - u is its own predecessor initially
+                self.dfs_visit(self.adj_list, node, found_cycle, node, visited)
             if found_cycle[0]:
                 break
         return found_cycle[0]

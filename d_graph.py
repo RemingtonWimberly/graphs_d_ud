@@ -194,9 +194,7 @@ class DirectedGraph:
         out = []
         # adj_list = dict(self.convert_matrix_to_Adj_list(self.adj_matrix))
         # self._dfs(adj_list, v_start, v_end, visited, out)
-        self._DFS(v_start, visited, out)
-
-
+        self._dfs(v_start, visited, out)
 
         new_out = []
 
@@ -218,17 +216,18 @@ class DirectedGraph:
     #         if itm not in visited:
     #             self._dfs(adj_list, itm, v_end, visited, ret)
 
-    def _DFS(self, start, visited, ret):
+    def _dfs(self, start, visited, ret):
 
+        """ DFS helper function """
         # append current node
         ret.append(start)
 
         visited[start] = True
 
-        for i in range(self.v_count):
+        for vert in range(self.v_count):
 
-            if self.adj_matrix[start][i] > 0 and (not visited[i]):
-                self._DFS(i, visited, ret)
+            if (not visited[vert]) and self.adj_matrix[start][vert] > 0:
+                self._dfs(vert, visited, ret)
 
 
 
@@ -286,13 +285,29 @@ class DirectedGraph:
         This method returns True if there is at least one cycle in the graph. If the graph is acyclic,
         the method returns False.
         """
-        visited = [False] * len(self.get_string_vertices())
-        stack = [False] * len(self.get_string_vertices())
-        for node in range(len(self.get_string_vertices())):
-            if not visited[node]:
-                if self._has_cycle(node, visited, stack):
+        # visited = [False] * self.v_count
+        # stack = [False] * self.v_count
+        # for node in range(self.v_count):
+        #     if not visited[node]:
+        #         if self._has_cycle(node, visited, stack):
+        #             return True
+        # return False
+        adj_list = self.convert_matrix_to_Adj_list(self.adj_matrix)
+        path = set()
+        visited = set()
+
+        def visit_nodes(node):
+            if node in visited:
+                return False
+            visited.add(node)
+            path.add(node)
+            for neighbour in adj_list.get(node, ()):
+                if neighbour in path or visit_nodes(neighbour):
                     return True
-        return False
+            path.remove(node)
+            return False
+
+        return any(visit_nodes(v) for v in adj_list)
 
     def dijkstra(self, start):
         """
@@ -347,71 +362,71 @@ if __name__ == '__main__':
 
     print("\nPDF - method add_vertex() / add_edge example 1")
     print("----------------------------------------------")
-    g = DirectedGraph()
-    print(g)
+    adj_list = DirectedGraph()
+    print(adj_list)
     for _ in range(5):
-        g.add_vertex()
-    print(g)
+        adj_list.add_vertex()
+    print(adj_list)
 
     practice_edges = [()]
 
     edges = [(0, 1, 10), (4, 0, 12), (1, 4, 15), (4, 3, 3),
              (3, 1, 5), (2, 1, 23), (3, 2, 7)]
     for src, dst, weight in edges:
-        g.add_edge(src, dst, weight)
-    print(g)
+        adj_list.add_edge(src, dst, weight)
+    print(adj_list)
 
     print("\nPDF - method get_edges() example 1")
     print("----------------------------------")
-    g = DirectedGraph()
-    print(g.get_edges(), g.get_string_vertices(), sep='\n')
+    adj_list = DirectedGraph()
+    print(adj_list.get_edges(), adj_list.get_string_vertices(), sep='\n')
     edges = [(0, 1, 10), (4, 0, 12), (1, 4, 15), (4, 3, 3),
              (3, 1, 5), (2, 1, 23), (3, 2, 7)]
-    g = DirectedGraph(edges)
-    print(g.get_edges(), g.get_string_vertices(), sep='\n')
+    adj_list = DirectedGraph(edges)
+    print(adj_list.get_edges(), adj_list.get_string_vertices(), sep='\n')
 
     print("\nPDF - method is_valid_path() example 1")
     print("--------------------------------------")
     edges = [(0, 1, 10), (4, 0, 12), (1, 4, 15), (4, 3, 3),
              (3, 1, 5), (2, 1, 23), (3, 2, 7)]
-    g = DirectedGraph(edges)
+    adj_list = DirectedGraph(edges)
     test_cases = [[0, 1, 4, 3], [1, 3, 2, 1], [0, 4], [4, 0], [], [2]]
     for path in test_cases:
-        print(path, g.is_valid_path(path))
+        print(path, adj_list.is_valid_path(path))
 
     print("\nPDF - method dfs() and bfs() example 1")
     print("--------------------------------------")
     edges = [(0, 1, 10), (4, 0, 12), (1, 4, 15), (4, 3, 3),
              (3, 1, 5), (2, 1, 23), (3, 2, 7)]
-    g = DirectedGraph(edges)
+    adj_list = DirectedGraph(edges)
     for v_start in range(5):
-        print(f'{v_start} DFS:{g.dfs(v_start)} BFS:{g.bfs(v_start)}')
+        print(f'{v_start} DFS:{adj_list.dfs(v_start)} BFS:{adj_list.bfs(v_start)}')
 
     print("\nPDF - method has_cycle() example 1")
     print("----------------------------------")
     edges = [(0, 1, 10), (4, 0, 12), (1, 4, 15), (4, 3, 3),
              (3, 1, 5), (2, 1, 23), (3, 2, 7)]
-    g = DirectedGraph(edges)
+    adj_list = DirectedGraph(edges)
 
     edges_to_remove = [(3, 1), (4, 0), (3, 2)]
     for src, dst in edges_to_remove:
-        g.remove_edge(src, dst)
-        print(g.get_edges(), g.has_cycle(), sep='\n')
+        adj_list.remove_edge(src, dst)
+        print(adj_list.get_edges(), adj_list.has_cycle(), sep='\n')
 
     edges_to_add = [(4, 3), (2, 3), (1, 3), (4, 0)]
     for src, dst in edges_to_add:
-        g.add_edge(src, dst)
-        print(g.get_edges(), g.has_cycle(), sep='\n')
-    print('\n', g)
+        adj_list.add_edge(src, dst)
+        print(adj_list.get_edges(), adj_list.has_cycle(), sep='\n')
+    print('\n', adj_list)
 
     print("\nPDF - dijkstra() example 1")
     print("--------------------------")
     edges = [(0, 1, 10), (4, 0, 12), (1, 4, 15), (4, 3, 3),
              (3, 1, 5), (2, 1, 23), (3, 2, 7)]
-    g = DirectedGraph(edges)
+    adj_list = DirectedGraph(edges)
     for i in range(5):
-        print(f'DIJKSTRA {i} {g.dijkstra(i)}')
-    g.remove_edge(4, 3)
-    print('\n', g)
+        print(f'DIJKSTRA {i} {adj_list.dijkstra(i)}')
+    adj_list.remove_edge(4, 3)
+    print('\n', adj_list)
     for i in range(5):
-        print(f'DIJKSTRA {i} {g.dijkstra(i)}')
+        print(f'DIJKSTRA {i} {adj_list.dijkstra(i)}')
