@@ -283,7 +283,7 @@ class DirectedGraph:
                     return True
             elif stack[neighbour]:
                 return True
-        stack[v] = False
+            stack[v] = False
         return False
 
     def has_cycle(self):
