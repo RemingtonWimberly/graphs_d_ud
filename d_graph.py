@@ -195,6 +195,7 @@ class DirectedGraph:
         adj_list = dict(self.convert_matrix_to_Adj_list(self.adj_matrix))
         self._dfs(adj_list, v_start, v_end, visited, out)
 
+
         new_out = []
 
         for i in out:
@@ -215,7 +216,10 @@ class DirectedGraph:
             if itm not in visited:
                 self._dfs(adj_list, itm, v_end, visited, ret)
 
+
+
     def bfs(self, v_start, v_end=None) -> []:
+        """ breadth first search """
 
         out = self._bfs(v_start)
 
@@ -228,63 +232,23 @@ class DirectedGraph:
         return new_out
 
     def _bfs(self, start) -> []:
+        """ bfs helper function """
 
         return_list = [start]
         queue = [start]
         visited = [False] * len(self.adj_matrix)
         visited[start] = True
         while len(queue) > 0:
+            vertex = queue.pop(0)
 
-
-            node = queue.pop(0)
-
-            for i in range(len(self.adj_matrix[node])):
-                if self.adj_matrix[node][i] and not visited[i]:
+            for i in range(len(self.adj_matrix[vertex])):
+                if self.adj_matrix[vertex][i] and not visited[i]:
                     return_list.append(i)
                     visited[i] = True
                     queue.append(i)
 
-
-
         return return_list
 
-    # def bfs(self, v_start, v_end=None) -> []:
-    #     """
-    #     breadth first search
-    #     """
-    #     adj_list = dict(self.convert_matrix_to_Adj_list(self.adj_matrix))
-    #     visited = []
-    #     keys = []
-    #     for itm in self.get_string_vertices():
-    #         keys.append(itm)
-    #         visited.append(False)
-    #     ret = []
-    #     stack = []
-    #     stack.append(v_start)
-    #     visited[keys.index('{}'.format(v_start))] = True
-    #     while stack:
-    #         v_start = stack.pop(0)
-    #         ###
-    #         ret.append(keys.index('{}'.format(v_start)))
-    #         if v_start == v_end:
-    #             break
-    #         to_append = []
-    #         for i in adj_list[v_start]:
-    #             if visited[keys.index('{}'.format(i))] == False:
-    #                 to_append.append(i)
-    #                 visited[keys.index('{}'.format(i))] = True
-    #         to_append.sort()
-    #         for itm in to_append:
-    #             stack.append(itm)
-    #     ret2 = []
-    #     ctr = 0
-    #     while ctr < ret.__len__():
-    #         ret2.append(keys[ret[ctr]])
-    #         ctr = ctr + 1
-    #     ret3 = []
-    #     for i in ret2:
-    #         ret3.append(int(i))
-    #     return ret3
 
     def _has_cycle(self, v, visited, stack):
         """
