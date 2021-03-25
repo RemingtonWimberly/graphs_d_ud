@@ -67,7 +67,7 @@ class DirectedGraph:
 
     def add_vertex(self) -> int:
         """
-        TODO: Write this implementation
+        adds a vertex to the graph
         """
         self.v_count += 1
         self.adj_matrix.append([0] * self.v_count)
@@ -79,7 +79,7 @@ class DirectedGraph:
 
     def add_edge(self, src: int, dst: int, weight=1) -> None:
         """
-        TODO: Write this implementation
+        adds an edge to the graph
         """
         if src >= self.v_count or dst >= self.v_count or weight <= 0 or src == dst:
             # if src >= self.v_count or dst >= self.v_count or weight <= 0 or src == dst:
@@ -88,7 +88,7 @@ class DirectedGraph:
 
     def remove_edge(self, src: int, dst: int) -> None:
         """
-        TODO: Write this implementation
+        Removes an edge from the graph
         """
         if dst >= self.v_count or src >= self.v_count:
             return
@@ -98,7 +98,7 @@ class DirectedGraph:
 
     def get_vertices(self) -> []:
         """
-        TODO: Write this implementation
+        returns the verticies
         """
 
         verticies = []
@@ -109,7 +109,7 @@ class DirectedGraph:
 
     def get_string_vertices(self) -> []:
         """
-        TODO: Write this implementation
+        returns the verticies as strings
         """
         verticies = []
         for i in list(range(len(self.adj_matrix))):
@@ -283,7 +283,7 @@ class DirectedGraph:
                     return True
             elif stack[neighbour]:
                 return True
-            stack[v] = False
+        stack[v] = False
         return False
 
     def has_cycle(self):
