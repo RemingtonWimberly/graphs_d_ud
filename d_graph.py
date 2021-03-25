@@ -165,19 +165,18 @@ class DirectedGraph:
     def convert_matrix_to_Adj_list(self, matrix):
 
         """ Converts a matrix to an adjacency list"""
+        """ code in part borrowed from stack overflow"""
 
-        l = matrix
+        adj_matrix = matrix
 
         graph = defaultdict(list)
         edges = set()
 
-        for i, v in enumerate(l, 0):
+        for i, v in enumerate(adj_matrix, 0):
             for j, u in enumerate(v, 0):
                 if u != 0 and frozenset([i, j]) not in edges:
                     edges.add(frozenset([i, j]))
-                    # graph[i].append({j: u})
                     graph[i].append(j)
-                    # graph[i].append(u)
         return graph
 
     def dfs(self, v_start, v_end=None) -> []:
