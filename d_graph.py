@@ -190,10 +190,12 @@ class DirectedGraph:
             new_out = [v_start]
             return new_out
 
-        visited = []
+        visited = [False] * self.v_count
         out = []
-        adj_list = dict(self.convert_matrix_to_Adj_list(self.adj_matrix))
-        self._dfs(adj_list, v_start, v_end, visited, out)
+        # adj_list = dict(self.convert_matrix_to_Adj_list(self.adj_matrix))
+        # self._dfs(adj_list, v_start, v_end, visited, out)
+        self._DFS(v_start, visited, out)
+
 
 
         new_out = []
@@ -204,17 +206,29 @@ class DirectedGraph:
                 break
         return new_out
 
-    def _dfs(self,adj_list, v_start, v_end=None, visited=[], ret=[]):
-        """ DFS helper funciton """
-        visited.append(v_start)
-        ret.append(v_start)
-        if not adj_list[v_start]:
-            return [v_start]
-        stack = adj_list[v_start]
-        stack.sort()
-        for itm in stack:
-            if itm not in visited:
-                self._dfs(adj_list, itm, v_end, visited, ret)
+    # def _dfs(self,adj_list, v_start, v_end=None, visited=[], ret=[]):
+    #     """ DFS helper funciton """
+    #     visited.append(v_start)
+    #     ret.append(v_start)
+    #     if not adj_list[v_start]:
+    #         return [v_start]
+    #     stack = adj_list[v_start]
+    #     stack.sort()
+    #     for itm in stack:
+    #         if itm not in visited:
+    #             self._dfs(adj_list, itm, v_end, visited, ret)
+
+    def _DFS(self, start, visited, ret):
+
+        # append current node
+        ret.append(start)
+
+        visited[start] = True
+
+        for i in range(self.v_count):
+
+            if self.adj_matrix[start][i] > 0 and (not visited[i]):
+                self._DFS(i, visited, ret)
 
 
 
