@@ -1,7 +1,5 @@
 # Course: CS261 - Data Structures
-# Author: 
-# Assignment: 
-# Description: 
+# Author: Remington Wimberly
 
 from collections import defaultdict
 from pprint import pprint
