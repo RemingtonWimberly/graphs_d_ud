@@ -1,8 +1,4 @@
-# Course: 
-# Author: 
-# Assignment: 
-# Description:
-
+# Author: Remington Wimberly
 
 class UndirectedGraph:
     """
